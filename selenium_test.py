@@ -46,6 +46,6 @@ def test_create_new_account2():
         selenium_actions.fill_input_by_name("reg_email__", "elitp@walla.co.il")
         sleep(3)
         selenium_actions.click_element_by_name("websubmit")
-        sleep(5)
+        sleep(10)
         assert selenium_actions.wait_for_text_to_appear_in_element_type("div",
                                                                         "Enter a combination of at least six numbers")
