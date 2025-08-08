@@ -6,7 +6,8 @@ class PlaywrightObject:
     def __init__(self, url):
         p = sync_playwright().start()
         browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
-        page = browser.new_page()
+        context = browser.new_context(locale="en-US")
+        page = context.new_page()
         self.p = p
         self.page = page
         self.browser = browser
