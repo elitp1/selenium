@@ -5,7 +5,7 @@ from playwright.sync_api import sync_playwright
 class PlaywrightObject:
     def __init__(self, url):
         p = sync_playwright().start()
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
         page = browser.new_page()
         self.p = p
         self.page = page
@@ -15,8 +15,9 @@ class PlaywrightObject:
 
     @allure.step("Click button by text")
     def click_btn_by_txt(self, text):
+        self.page.screenshot(path="/tmp/allure/before_click.png")
         locator = self.page.get_by_text(text)
-        locator.wait_for(state="visible")
+        locator.wait_for(state="attached")
         locator.click()
 
     @allure.step("Click button by name")
