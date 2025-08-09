@@ -1,3 +1,12 @@
-with open("/tmp/allure/test.txt","a") as f:
-    f.write("Hello, World!")
-print("AAaaa")
+import numpy as np
+import pandas as pd
+
+df = pd.DataFrame({
+    'A': [1, 2, 3],
+    'B': [4, 5, 6],
+    'C': [7, 8, 9]
+})
+
+for i in df.keys():
+
+
