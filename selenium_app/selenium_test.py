@@ -36,5 +36,5 @@ def test_create_new_account2():
     with SeleniumObject() as selenium_obj:
         selenium_obj.navigate_to("https://demoblaze.com/")
         login_actions = LoginSeleniumActions(selenium_obj.driver)
-        login_actions.login_to_application("hilit", "prizant")
-        sleep(20)
+        login_actions.register_a_new_user("hilit", "prizant")
+        sleep(5)

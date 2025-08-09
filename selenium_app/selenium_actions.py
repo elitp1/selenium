@@ -1,7 +1,10 @@
 from time import sleep
 
 import allure
-from selenium.webdriver import ActionChains
+import selenium
+from selenium.common import NoAlertPresentException
+from selenium.webdriver import ActionChains, Keys
+from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
@@ -24,6 +27,15 @@ class SeleniumActions:
         element = WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located(locator))
         element.send_keys(text_to_fill)
+
+    @allure.step("wait_for_alert")
+    def wait_for_alert(self):
+        try:
+            WebDriverWait(self.driver, 10).until(EC.alert_is_present())
+            alert = Alert(self.driver)
+            return alert.text
+        except NoAlertPresentException:
+            return False
 
     @allure.step("select_option_from_dropdown_by_name_and_value")
     def select_option_from_dropdown_by_name_and_value(self, element, value):
@@ -57,9 +69,13 @@ class LoginSeleniumActions(SeleniumActions):
         super().__init__(driver)
 
     @allure.step(f"login_to_application with username and password")
-    def login_to_application(self, username, password):
+    def register_a_new_user(self, username, password):
         self.click_element((By.LINK_TEXT, "Sign up"))
         sleep(2)
         self.fill_input((By.ID, "sign-username"), username)
         self.fill_input((By.ID, "sign-password"), password)
         self.click_element((By.XPATH, "//button[contains(.,'Sign up')]"))
+        sleep(5)
+        alert_text = self.wait_for_alert()
+        print("Alert text:", alert_text)
+
