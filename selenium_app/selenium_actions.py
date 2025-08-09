@@ -2,7 +2,7 @@ from time import sleep
 
 import allure
 import selenium
-from selenium.common import NoAlertPresentException
+from selenium.common import NoAlertPresentException, TimeoutException
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.common.by import By
@@ -33,8 +33,10 @@ class SeleniumActions:
         try:
             WebDriverWait(self.driver, 10).until(EC.alert_is_present())
             alert = Alert(self.driver)
-            return alert.text
-        except NoAlertPresentException:
+            alert_text = alert.text
+            alert.accept()  # Accept the alert
+            return alert_text
+        except TimeoutException:
             return False
 
     @allure.step("select_option_from_dropdown_by_name_and_value")
