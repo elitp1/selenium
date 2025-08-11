@@ -7,6 +7,5 @@ df = pd.DataFrame({
     'C': [7, 8, 9]
 })
 
-for i in df.keys():
-
-
+df.loc[0:1, 'C'] = 999
+print(df)

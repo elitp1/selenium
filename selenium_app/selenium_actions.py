@@ -77,7 +77,7 @@ class LoginSeleniumActions(SeleniumActions):
         self.fill_input((By.ID, "sign-username"), username)
         self.fill_input((By.ID, "sign-password"), password)
         self.click_element((By.XPATH, "//button[contains(.,'Sign up')]"))
-        sleep(5)
+        sleep(2)
         alert_text = self.wait_for_alert()
-        print("Alert text:", alert_text)
+        return alert_text
 

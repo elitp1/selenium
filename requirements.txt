@@ -3,3 +3,5 @@ selenium>=4.16.0
 allure-pytest>=2.13.2
 np~=1.0.2
 allure-python-commons~=2.15.0
+numpy~=2.0.2
+pandas~=2.3.1

@@ -27,14 +27,32 @@ def ytest_create_new_account1():
         assert True
 
 
-@allure.epic("epic level")
-@allure.feature("feature level")
-@allure.story("story level")
-@allure.title("Test Create New Account on Facebook2")
-@allure.tag("tag1")
-def test_create_new_account2():
+def register_a_user(username, password):
     with SeleniumObject() as selenium_obj:
         selenium_obj.navigate_to("https://demoblaze.com/")
         login_actions = LoginSeleniumActions(selenium_obj.driver)
-        login_actions.register_a_new_user("hilit", "prizant")
-        sleep(5)
+        alert_message = login_actions.register_a_new_user(username, password)
+        sleep(2)
+        return alert_message
+
+
+@allure.epic("epic level")
+@allure.feature("feature level")
+@allure.story("story level")
+@allure.title("Test Create New Account with_existing_user")
+@allure.tag("tag1")
+def test_create_new_account_with_existing_user():
+    alert_message = register_a_user("hilit", "prizant")
+    assert alert_message == "This user already exist."
+
+
+@allure.epic("epic level")
+@allure.feature("feature level")
+@allure.story("story level")
+@allure.title("Test Create New Account with new user")
+@allure.tag("tag1")
+def test_create_new_account_with_new_user():
+    user = "hilit" + str(int(time.time()))
+    password = "prizant" + str(int(time.time()))
+    alert_message = register_a_user(user, password)
+    assert alert_message == "Sign up successful."
