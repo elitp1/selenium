@@ -1,32 +1,25 @@
 from time import sleep
 import allure
 import time
-from playwrightobject import PlaywrightObject
-from selenium_actions import SeleniumActions, LoginSeleniumActions
-from selenium_app.playwrite_actions import PlaywrightActions
-from selenium_object import SeleniumObject
+
+from selenium_app.playwrightobject import PlaywrightObject
+from selenium_app.playwrite_actions import LoginPlaywrightActions
+from selenium_app.selenium_actions import LoginSeleniumActions
+from selenium_app.selenium_object import SeleniumObject
 
 
 @allure.epic("epic level")
 @allure.feature("feature level")
-@allure.story("story level")
-@allure.title("Test Create New Account on Facebook1")
+@allure.story("playwright tests")
+@allure.title("test_create_new_account_with_existing_user_playwright")
 @allure.tag("tag1")
-def test_create_new_account1():
+def test_create_new_account_with_existing_user_playwright():
     with PlaywrightObject() as playwright_obj:
-        playwright_obj.navigate_to("https://www.facebook.com/")
-        playwright_actions = PlaywrightActions(playwright_obj.page)
-        playwright_actions.click_btn_by_txt("Create new account")
-        playwright_actions.fill_input_by_name("firstname", "Hilit")
-        playwright_actions.fill_input_by_name("lastname", "prizant")
-        playwright_actions.select_option_from_drop_down_by_name("birthday_month", "Oct")
-        playwright_actions.select_option_from_drop_down_by_name("birthday_day", "3")
-        playwright_actions.select_option_from_drop_down_by_name("birthday_year", "1973")
-        playwright_actions.select_option_from_radio_btn_by_value("sex", "2")
-        playwright_actions.fill_input_by_name("reg_email__", "elitp@walla.co.il")
-        playwright_actions.click_btn_by_name("websubmit")
-        time.sleep(10)
-        assert True
+        playwright_obj.navigate_to("https://demoblaze.com/")
+        playwright_login_actions = LoginPlaywrightActions(playwright_obj.page)
+        alert_message = playwright_login_actions.register_a_new_user("hilit", "prizant")
+        sleep(2)
+        print(alert_message)
 
 
 def register_a_user(username, password):
@@ -40,8 +33,8 @@ def register_a_user(username, password):
 
 @allure.epic("epic level")
 @allure.feature("feature level")
-@allure.story("story level")
-@allure.title("Test Create New Account with_existing_user")
+@allure.story("selenium tests")
+@allure.title("test_create_new_account_with_existing_user")
 @allure.tag("tag1")
 def test_create_new_account_with_existing_user():
     alert_message = register_a_user("hilit", "prizant")
@@ -50,10 +43,10 @@ def test_create_new_account_with_existing_user():
 
 @allure.epic("epic level")
 @allure.feature("feature level")
-@allure.story("story level")
-@allure.title("Test Create New Account with new user")
+@allure.story("selenium tests")
+@allure.title("test_create_new_account_with_new_user_selenium")
 @allure.tag("tag1")
-def test_create_new_account_with_new_user():
+def test_create_new_account_with_new_user_selenium():
     user = "hilit" + str(int(time.time()))
     password = "prizant" + str(int(time.time()))
     alert_message = register_a_user(user, password)

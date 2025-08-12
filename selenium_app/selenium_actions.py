@@ -31,8 +31,7 @@ class SeleniumActions:
     @allure.step("wait_for_alert")
     def wait_for_alert(self):
         try:
-            WebDriverWait(self.driver, 10).until(EC.alert_is_present())
-            alert = Alert(self.driver)
+            alert = WebDriverWait(self.driver, 10).until(EC.alert_is_present())
             alert_text = alert.text
             alert.accept()  # Accept the alert
             return alert_text

@@ -5,24 +5,29 @@ class PlaywrightActions:
     def __init__(self, driver):
         self.page = driver
 
-    @allure.step("Click button by text")
-    def click_btn_by_txt(self, text):
-        self.page.screenshot(path="/tmp/allure/before_click.png")
-        locator = self.page.get_by_text(text)
-        locator.wait_for(state="attached")
-        locator.click()
-
     @allure.step("Click button by name")
-    def click_btn_by_name(self, name):
-        locator = self.page.locator(f'[name="{name}"]')
+    def click_element(self, locator_name):
+        locator = self.page.locator(locator_name)
         locator.wait_for(state="visible")
+        print(f"Clicking on element with locator: {locator_name}")
         locator.click()
 
     @allure.step("fill input by name")
-    def fill_input_by_name(self, element_name, text_to_fill):
-        locator = self.page.locator(f'[name="{element_name}"]')
+    def fill_input(self, locator_name, text_to_fill):
+        locator = self.page.locator(locator_name)
         locator.wait_for(state="visible")
         locator.fill(text_to_fill)
+
+    @allure.step("wait for alert")
+    def wait_for_alert(self):
+        try:
+            dialog = self.page.wait_for_event("dialog")
+            alert_text = dialog.message
+            dialog.accept()
+            return alert_text
+        except Exception as e:
+            print(f"Error waiting for alert: {e}")
+            return False
 
     @allure.step("select_option_from_drop_down_by_name")
     def select_option_from_drop_down_by_name(self, element_name, option_text):
@@ -41,3 +46,16 @@ class PlaywrightActions:
         locator = self.page.locator(f'[name="{element_name}"]')
         locator.wait_for(state="visible")
         return locator.input_value()
+
+
+class LoginPlaywrightActions(PlaywrightActions):
+    def __init__(self, driver):
+        super().__init__(driver)
+
+    @allure.step("Register a new user")
+    def register_a_new_user(self, username, password):
+        self.click_element("//a[text()='Sign up']")
+        self.fill_input("#sign-username", username)
+        self.fill_input("#sign-password", password)
+        self.click_element("//button[text()='Sign up']")
+        return self.wait_for_alert()
