@@ -16,8 +16,6 @@ class SeleniumObject:
         options.add_argument("--disable-gpu")  # Just in case, especially in headless
         options.add_argument("--window-size=1920,1080")
         self.driver = webdriver.Chrome(options=options)  # or webdriver.Firefox() if using Firefox
-        self.driver.maximize_window()
-        self.wait = WebDriverWait(self.driver, 10)
 
     def navigate_to(self, url):
         self.driver.get(url)

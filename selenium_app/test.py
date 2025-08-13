@@ -1,7 +1,9 @@
+from enum import Enum
 from threading import Thread, Lock
 from time import sleep
 import random
 import pandas as pd
+from pip._internal.utils.misc import enum
 
 df = pd.DataFrame({
     'A': [1, 2, 3],
@@ -10,19 +12,13 @@ df = pd.DataFrame({
 })
 
 
-def a(i,lock):
-    number = random.randrange(0,100)
-    sleep(number)
-    with lock:
-        print(i)
+class TESTING(Enum):
+    A = "1"
+    B = "2"
+    C = "3"
 
 
-treads = []
-lock = Lock()
-for i in range(100):
-    t = Thread(target=a, args=[i,lock])
-    t.start()
-    treads.append(t)
-for item in treads:
-    item.join()
+for item in TESTING:
+    print(item)
+
 
