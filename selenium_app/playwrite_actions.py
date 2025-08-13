@@ -5,14 +5,14 @@ class PlaywrightActions:
     def __init__(self, driver):
         self.page = driver
 
-    @allure.step("Click button by name")
+    @allure.step("Click button")
     def click_element(self, locator_name):
         locator = self.page.locator(locator_name)
         locator.wait_for(state="visible")
         print(f"Clicking on element with locator: {locator_name}")
         locator.click()
 
-    @allure.step("fill input by name")
+    @allure.step("fill input")
     def fill_input(self, locator_name, text_to_fill):
         locator = self.page.locator(locator_name)
         locator.wait_for(state="visible")

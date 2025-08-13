@@ -7,24 +7,42 @@ from selenium_app.playwrite_actions import RegisterPlaywrightActions
 from selenium_app.selenium_actions import RegisterSeleniumActions
 from selenium_app.selenium_object import SeleniumObject
 
+SITE_URL = "https://demoblaze.com/"
+
+
+def register_a_user_playwright(username, password):
+    with PlaywrightObject() as playwright_obj:
+        playwright_obj.navigate_to(SITE_URL)
+        playwright_register_actions = RegisterPlaywrightActions(playwright_obj.page)
+        alert_message = playwright_register_actions.register_a_new_user(username, password)
+        return alert_message
+
 
 @allure.epic("epic level")
 @allure.feature("feature level")
 @allure.story("playwright tests")
 @allure.title("test_create_new_account_with_existing_user_playwright")
-@allure.tag("tag1")
+@allure.tag("playwright")
 def test_create_new_account_with_existing_user_playwright():
-    with PlaywrightObject() as playwright_obj:
-        playwright_obj.navigate_to("https://demoblaze.com/")
-        playwright_register_actions = RegisterPlaywrightActions(playwright_obj.page)
-        alert_message = playwright_register_actions.register_a_new_user("hilit", "prizant")
-        sleep(2)
-        print(alert_message)
+    alert_message = register_a_user_playwright("hilit", "prizant")
+    assert alert_message == "This user already exist."
 
 
-def register_a_user(username, password):
+@allure.epic("epic level")
+@allure.feature("feature level")
+@allure.story("playwright tests")
+@allure.title("test_create_new_account_with_new_user_playwright")
+@allure.tag("playwright")
+def test_create_new_account_with_new_user_playwright():
+    user = "hilit" + str(int(time.time()))
+    password = "prizant" + str(int(time.time()))
+    alert_message = register_a_user_playwright(user, password)
+    assert alert_message == "Sign up successful."
+
+
+def register_a_user_selenium(username, password):
     with SeleniumObject() as selenium_obj:
-        selenium_obj.navigate_to("https://demoblaze.com/")
+        selenium_obj.navigate_to(SITE_URL)
         register_actions = RegisterSeleniumActions(selenium_obj.driver)
         alert_message = register_actions.register_a_new_user(username, password)
         sleep(2)
@@ -34,10 +52,10 @@ def register_a_user(username, password):
 @allure.epic("epic level")
 @allure.feature("feature level")
 @allure.story("selenium tests")
-@allure.title("test_create_new_account_with_existing_user")
-@allure.tag("tag1")
-def test_create_new_account_with_existing_user():
-    alert_message = register_a_user("hilit", "prizant")
+@allure.title("test_create_new_account_with_existing_user_selenium")
+@allure.tag("selenium")
+def test_create_new_account_with_existing_user_selenium():
+    alert_message = register_a_user_selenium("hilit", "prizant")
     assert alert_message == "This user already exist."
 
 
@@ -45,9 +63,9 @@ def test_create_new_account_with_existing_user():
 @allure.feature("feature level")
 @allure.story("selenium tests")
 @allure.title("test_create_new_account_with_new_user_selenium")
-@allure.tag("tag1")
+@allure.tag("selenium")
 def test_create_new_account_with_new_user_selenium():
     user = "hilit" + str(int(time.time()))
     password = "prizant" + str(int(time.time()))
-    alert_message = register_a_user(user, password)
+    alert_message = register_a_user_selenium(user, password)
     assert alert_message == "Sign up successful."
