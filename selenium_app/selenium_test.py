@@ -3,8 +3,8 @@ import allure
 import time
 
 from selenium_app.playwrightobject import PlaywrightObject
-from selenium_app.playwrite_actions import LoginPlaywrightActions
-from selenium_app.selenium_actions import LoginSeleniumActions
+from selenium_app.playwrite_actions import RegisterPlaywrightActions
+from selenium_app.selenium_actions import RegisterSeleniumActions
 from selenium_app.selenium_object import SeleniumObject
 
 
@@ -16,8 +16,8 @@ from selenium_app.selenium_object import SeleniumObject
 def test_create_new_account_with_existing_user_playwright():
     with PlaywrightObject() as playwright_obj:
         playwright_obj.navigate_to("https://demoblaze.com/")
-        playwright_login_actions = LoginPlaywrightActions(playwright_obj.page)
-        alert_message = playwright_login_actions.register_a_new_user("hilit", "prizant")
+        playwright_register_actions = RegisterPlaywrightActions(playwright_obj.page)
+        alert_message = playwright_register_actions.register_a_new_user("hilit", "prizant")
         sleep(2)
         print(alert_message)
 
@@ -25,8 +25,8 @@ def test_create_new_account_with_existing_user_playwright():
 def register_a_user(username, password):
     with SeleniumObject() as selenium_obj:
         selenium_obj.navigate_to("https://demoblaze.com/")
-        login_actions = LoginSeleniumActions(selenium_obj.driver)
-        alert_message = login_actions.register_a_new_user(username, password)
+        register_actions = RegisterSeleniumActions(selenium_obj.driver)
+        alert_message = register_actions.register_a_new_user(username, password)
         sleep(2)
         return alert_message
 

@@ -12,26 +12,25 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class SeleniumActions:
-    def __init__(self, driver):
+    def __init__(self, driver, timeout=10):
         self.driver = driver
         self.actions = ActionChains(driver)
+        self.wait = WebDriverWait(driver, timeout)
 
     @allure.step("click_element")
     def click_element(self, locator):
-        element = WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable(locator))
+        element = self.wait.until(EC.element_to_be_clickable(locator))
         element.click()
 
     @allure.step("fill_input")
     def fill_input(self, locator, text_to_fill):
-        element = WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located(locator))
+        element = self.wait.until(EC.visibility_of_element_located(locator))
         element.send_keys(text_to_fill)
 
     @allure.step("wait_for_alert")
     def wait_for_alert(self):
         try:
-            alert = WebDriverWait(self.driver, 10).until(EC.alert_is_present())
+            alert = self.wait.until(EC.alert_is_present())
             alert_text = alert.text
             alert.accept()  # Accept the alert
             return alert_text
@@ -47,8 +46,7 @@ class SeleniumActions:
 
     @allure.step("select_option_from_radio_btn_by_name_and_value")
     def select_option_from_radio_btn_by_name_and_value(self, element, value):
-        radio_btn_elements = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_all_elements_located((By.NAME, element)))
+        radio_btn_elements = self.wait.until(EC.presence_of_all_elements_located((By.NAME, element)))
         for radio_btn in radio_btn_elements:
             if radio_btn.get_attribute("value") == value:
                 radio_btn.click()
@@ -65,17 +63,22 @@ class SeleniumActions:
             return False
 
 
-class LoginSeleniumActions(SeleniumActions):
+class RegisterSeleniumActions(SeleniumActions):
     def __init__(self, driver):
         super().__init__(driver)
 
+    REGISTER_LINK = (By.LINK_TEXT, "Sign up")
+    REGISTER_USERNAME_INPUT = (By.ID, "sign-username")
+    REGISTER_PASSWORD_INPUT = (By.ID, "sign-password")
+    REGISTER_BUTTON = (By.XPATH, "//button[contains(.,'Sign up')]")
+
     @allure.step(f"login_to_application with username and password")
     def register_a_new_user(self, username, password):
-        self.click_element((By.LINK_TEXT, "Sign up"))
+        self.click_element(RegisterSeleniumActions.REGISTER_LINK)
         sleep(2)
-        self.fill_input((By.ID, "sign-username"), username)
-        self.fill_input((By.ID, "sign-password"), password)
-        self.click_element((By.XPATH, "//button[contains(.,'Sign up')]"))
+        self.fill_input(RegisterSeleniumActions.REGISTER_USERNAME_INPUT, username)
+        self.fill_input(RegisterSeleniumActions.REGISTER_PASSWORD_INPUT, password)
+        self.click_element(RegisterSeleniumActions.REGISTER_BUTTON)
         sleep(2)
         alert_text = self.wait_for_alert()
         return alert_text
