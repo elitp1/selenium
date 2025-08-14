@@ -72,7 +72,7 @@ class RegisterSeleniumActions(SeleniumActions):
     REGISTER_PASSWORD_INPUT = (By.ID, "sign-password")
     REGISTER_BUTTON = (By.XPATH, "//button[contains(.,'Sign up')]")
 
-    @allure.step(f"login_to_application with username and password")
+    @allure.step(f"register_a_new_user")
     def register_a_new_user(self, username, password):
         self.click_element(RegisterSeleniumActions.REGISTER_LINK)
         sleep(2)
