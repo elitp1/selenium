@@ -5,7 +5,7 @@ from playwright.sync_api import sync_playwright
 class PlaywrightObject:
     def __init__(self):
         p = sync_playwright().start()
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         context = browser.new_context(locale="en-US")
         page = context.new_page()
         self.p = p

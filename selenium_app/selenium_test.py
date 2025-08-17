@@ -6,8 +6,10 @@ from selenium_app.playwrightobject import PlaywrightObject
 from selenium_app.playwrite_actions import RegisterPlaywrightActions
 from selenium_app.selenium_actions import RegisterSeleniumActions
 from selenium_app.selenium_object import SeleniumObject
+from selenium_app.slack_util import Slack
 
 SITE_URL = "https://demoblaze.com/"
+slack = Slack()
 
 
 def register_a_user_playwright(username, password):
@@ -26,6 +28,7 @@ def register_a_user_playwright(username, password):
 def test_create_new_account_with_existing_user_playwright():
     alert_message = register_a_user_playwright("hilit", "prizant")
     assert alert_message == "This user already exist."
+   # slack.send_message("test_create_new_account_with_existing_user_playwright passed", "good")
 
 
 @allure.epic("epic level")
@@ -38,6 +41,7 @@ def test_create_new_account_with_new_user_playwright():
     password = "prizant" + str(int(time.time()))
     alert_message = register_a_user_playwright(user, password)
     assert alert_message == "Sign up successful."
+#    slack.send_message("test_create_new_account_with_new_user_playwright passed", "good")
 
 
 def register_a_user_selenium(username, password):
@@ -56,7 +60,8 @@ def register_a_user_selenium(username, password):
 @allure.tag("selenium")
 def test_create_new_account_with_existing_user_selenium():
     alert_message = register_a_user_selenium("hilit", "prizant")
-    assert alert_message == "This user already exist."
+    assert alert_message == "Thiss user already exist."
+    # slack.send_message(f"test_create_new_account_with_existing_user_selenium {result}", color)
 
 
 @allure.epic("epic level")
@@ -69,3 +74,4 @@ def test_create_new_account_with_new_user_selenium():
     password = "prizant" + str(int(time.time()))
     alert_message = register_a_user_selenium(user, password)
     assert alert_message == "Sign up successful."
+#    slack.send_message("test_create_new_account_with_new_user_selenium passed", "good")

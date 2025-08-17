@@ -1,9 +1,12 @@
-from enum import Enum
-from threading import Thread, Lock
-from time import sleep
-import random
+import datetime
+from collections import Counter
+from datetime import time
+
 import pandas as pd
-from pip._internal.utils.misc import enum
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
+
+from selenium_app.utils import add_tests_results_to_report, send_results_to_slack
 
 df = pd.DataFrame({
     'A': [1, 2, 3],
@@ -11,14 +14,4 @@ df = pd.DataFrame({
     'C': [7, 8, 9]
 })
 
-
-class TESTING(Enum):
-    A = "1"
-    B = "2"
-    C = "3"
-
-
-for item in TESTING:
-    print(item)
-
-
+send_results_to_slack()
