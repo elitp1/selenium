@@ -1,0 +1,75 @@
+from time import sleep
+import allure
+import time
+
+from selenium_app.playwrightobject import PlaywrightObject
+from selenium_app.playwrite_actions import RegisterPlaywrightActions
+from selenium_app.selenium_actions import RegisterSeleniumActions
+from selenium_app.selenium_object import SeleniumObject
+
+SITE_URL = "https://demoblaze.com/"
+
+
+def register_a_user_playwright(username, password):
+    with PlaywrightObject() as playwright_obj:
+        playwright_obj.navigate_to(SITE_URL)
+        playwright_register_actions = RegisterPlaywrightActions(playwright_obj.page)
+        alert_message = playwright_register_actions.register_a_new_user(username, password)
+        return alert_message
+
+
+@allure.epic("Demo Epic")
+@allure.feature("Demo Feature")
+@allure.story("playwright tests")
+@allure.tag("playwright")
+@allure.title("create_new_account_with_existing_user_playwright")
+def test_create_new_account_with_existing_user_playwright():
+    alert_message = register_a_user_playwright("hilit", "prizant")
+    assert alert_message == "This user already exist."
+   # slack.send_message("test_create_new_account_with_existing_user_playwright passed", "good")
+
+
+@allure.epic("Demo Epic")
+@allure.feature("Demo Feature")
+@allure.story("playwright tests")
+@allure.tag("playwright")
+@allure.title("test_create_new_account_with_new_user_playwright")
+def test_create_new_account_with_new_user_playwright():
+    user = "hilit" + str(int(time.time()))
+    password = "prizant" + str(int(time.time()))
+    alert_message = register_a_user_playwright(user, password)
+    assert alert_message == "Sign up successful."
+#    slack.send_message("test_create_new_account_with_new_user_playwright passed", "good")
+
+
+def register_a_user_selenium(username, password):
+    with SeleniumObject() as selenium_obj:
+        selenium_obj.navigate_to(SITE_URL)
+        register_actions = RegisterSeleniumActions(selenium_obj.driver)
+        alert_message = register_actions.register_a_new_user(username, password)
+        sleep(2)
+        return alert_message
+
+
+@allure.epic("Demo Epic")
+@allure.feature("Demo Feature")
+@allure.story("selenium tests")
+@allure.tag("selenium")
+@allure.title("test_create_new_account_with_existing_user_selenium")
+def test_create_new_account_with_existing_user_selenium():
+    alert_message = register_a_user_selenium("hilit", "prizant")
+    assert alert_message == "Thiss user already exist."
+    # slack.send_message(f"test_create_new_account_with_existing_user_selenium {result}", color)
+
+
+@allure.epic("Demo Epic")
+@allure.feature("Demo Feature")
+@allure.story("selenium tests")
+@allure.tag("selenium")
+@allure.title("test_create_new_account_with_new_user_selenium")
+def test_create_new_account_with_new_user_selenium():
+    user = "hilit" + str(int(time.time()))
+    password = "prizant" + str(int(time.time()))
+    alert_message = register_a_user_selenium(user, password)
+    assert alert_message == "Sign up successful."
+#    slack.send_message("test_create_new_account_with_new_user_selenium passed", "good")
