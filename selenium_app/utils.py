@@ -5,7 +5,11 @@ import pandas as pd
 from selenium_app.slack_util import Slack
 
 RESULTS_PATH = '/tmp/text_results.csv'
-
+GREEN = "\033[92m"
+RED = "\033[91m"
+RESET = "\0330m]"
+check = "\u2705"
+cross = "\u274C"
 
 def delete_results_file():
     if os.path.exists(RESULTS_PATH):
@@ -13,6 +17,10 @@ def delete_results_file():
 
 
 def add_tests_results_to_report(test_name, outcome, duration):
+    if outcome == 'passed':
+        outcome = f"{check} Success"
+    else:
+        outcome = f"{cross} Failed"
     test_name = test_name.split('::')[-1]  # Get the last part of the test name
     df_current_test = pd.DataFrame(data={
         'Test Name': [test_name],

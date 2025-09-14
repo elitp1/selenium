@@ -1,4 +1,7 @@
-from selenium_app.slack_util import Slack
+GREEN = "\033[92m"
+RED = "\033[91m"
+RESET = "\0330m]"
+check = "\u2705"
+cross = "\u274C"
 
-slack = Slack()
-slack.send_slack_message("aaaa")
+print(f"{GREEN}{check} Success")
