@@ -33,3 +33,13 @@ class Slack:
             print(f"Error sending message: {e.response['error']}")
             return None
 
+    def send_slack_message(self, text):
+        try:
+            response = self.client.chat_postMessage(
+                channel=Slack.channel,
+                text=text
+            )
+            return response
+        except SlackApiError as e:
+            print(f"Error sending message: {e.response['error']}")
+            return None

@@ -1,4 +1,3 @@
-from selenium_app.selenium_test import slack
 from selenium_app.utils import add_tests_results_to_report, delete_results_file, send_results_to_slack
 
 
