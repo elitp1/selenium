@@ -1,7 +1,7 @@
-GREEN = "\033[92m"
-RED = "\033[91m"
-RESET = "\0330m]"
-check = "\u2705"
-cross = "\u274C"
+import pandas as pd
 
-print(f"{GREEN}{check} Success")
+
+m = pd.DataFrame(data={'a': [1,2,3], 'b': [4,5,6]})
+
+for row in m.iterrows():
+    print(row[1]['b'])

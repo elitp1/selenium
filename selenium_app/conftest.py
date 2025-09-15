@@ -19,6 +19,6 @@ def pytest_runtest_teardown(item):
 
 def pytest_runtest_logreport(report):
     if report.when == 'call':
-        add_tests_results_to_report(report.nodeid,report.outcome, report.duration)
+        add_tests_results_to_report(report.nodeid,report.outcome, report.duration, report.longrepr)
 
 

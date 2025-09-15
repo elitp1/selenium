@@ -5,9 +5,6 @@ import pandas as pd
 from selenium_app.slack_util import Slack
 
 RESULTS_PATH = '/tmp/text_results.csv'
-GREEN = "\033[92m"
-RED = "\033[91m"
-RESET = "\0330m]"
 check = "\u2705"
 cross = "\u274C"
 
@@ -16,7 +13,7 @@ def delete_results_file():
         os.remove(RESULTS_PATH)
 
 
-def add_tests_results_to_report(test_name, outcome, duration):
+def add_tests_results_to_report(test_name, outcome, duration, error=""):
     if outcome == 'passed':
         outcome = f"{check} Success"
     else:
@@ -25,7 +22,8 @@ def add_tests_results_to_report(test_name, outcome, duration):
     df_current_test = pd.DataFrame(data={
         'Test Name': [test_name],
         'Outcome': [outcome],
-        'Duration': [duration]
+        'Duration': [duration],
+        'error': [error]
     })
     if os.path.exists(RESULTS_PATH):
         results_df = pd.read_csv(RESULTS_PATH)
@@ -38,4 +36,4 @@ def add_tests_results_to_report(test_name, outcome, duration):
 def send_results_to_slack():
     df = pd.read_csv(RESULTS_PATH)
     slack = Slack()
-    slack.send_slack_message_with_results_summery(df)
+    slack.send_slack_summery(df)

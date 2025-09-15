@@ -33,13 +33,25 @@ class Slack:
             print(f"Error sending message: {e.response['error']}")
             return None
 
-    def send_slack_message(self, text):
+    def send_slack_message(self, text, parent_thread=None):
         try:
             response = self.client.chat_postMessage(
                 channel=Slack.channel,
-                text=text
+                text=text,
+                thread_ts=parent_thread
             )
             return response
         except SlackApiError as e:
             print(f"Error sending message: {e.response['error']}")
             return None
+
+    def send_slack_summery(self, df):
+        response = self.send_slack_message_with_results_summery(df.loc[:, ['Test Name', 'Outcome', 'Duration']])
+        if not response:
+            return
+        for _, row in df.iterrows():
+            if "Success" not in row['Outcome']:
+                self.send_slack_message(f"*Test Name*: {row['Test Name']}\n"
+                                        f"*Outcome*: {row['Outcome']}\n"
+                                        f"*Error*: {row['error']}",
+                                        response["ts"])
