@@ -4,9 +4,10 @@ import pandas as pd
 
 from selenium_app.slack_util import Slack
 
-RESULTS_PATH = '/tmp/text_results.csv'
+RESULTS_PATH = '/tmp/results/text_results.csv'
 check = "\u2705"
 cross = "\u274C"
+
 
 def delete_results_file():
     if os.path.exists(RESULTS_PATH):
