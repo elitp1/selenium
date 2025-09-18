@@ -1,3 +1,5 @@
+from os import environ
+
 import tabulate
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
@@ -7,7 +9,10 @@ class Slack:
     channel = "#new-channel"
 
     def __init__(self):
-        self.client = WebClient(token="")
+        slack_token = environ.get('SLACK_TOKEN', None)
+        if not slack_token:
+            raise ValueError("SLACK_TOKEN environment variable not set")
+        self.client = WebClient(token=slack_token)
 
     def send_slack_message_with_results_summery(self, df):
         try:

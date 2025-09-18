@@ -1,6 +1,6 @@
+from os import environ
+
 import pandas as pd
 
 
-a = {1,2,3}
-
-print(a[5])
+print(environ.get('SLACK_TOKEN',None))
